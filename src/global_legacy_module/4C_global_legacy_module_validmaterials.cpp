@@ -1131,7 +1131,7 @@ std::unordered_map<Core::Materials::MaterialType, Core::IO::InputSpec> Global::v
   {
     known_materials[Core::Materials::m_pldruckprag] = group("MAT_Struct_DruckerPrager",
         {
-            parameter<double>("YOUNG", {.description = "Young's modulus"}),
+            input_field<double>("YOUNG", {.description = "Young's modulus"}),
             parameter<double>("NUE", {.description = "Poisson's ratio"}),
             parameter<double>("DENS", {.description = "Density"}),
             parameter<double>("ISOHARD", {.description = "linear isotropic hardening"}),
