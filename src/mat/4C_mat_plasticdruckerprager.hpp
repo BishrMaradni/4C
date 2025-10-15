@@ -12,6 +12,7 @@
 
 #include "4C_comm_parobjectfactory.hpp"
 #include "4C_inpar_structure.hpp"
+#include "4C_io_input_field.hpp"
 #include "4C_linalg_tensor_conversion.hpp"
 #include "4C_mat_material_factory.hpp"
 #include "4C_mat_so3_material.hpp"
@@ -42,7 +43,7 @@ namespace Mat
       //! @name material parameters
       //@{
       //! Young's modulus
-      const double youngs_;
+      Core::IO::InputField<double> youngs_;
       //! Possion's ratio
       const double poissonratio_;
       //! Density
@@ -156,7 +157,7 @@ namespace Mat
     void stress(const T p, const Core::LinAlg::Matrix<NUM_STRESS_3D, 1, T>& devstress,
         Core::LinAlg::Matrix<NUM_STRESS_3D, 1, T>& stress) const;
 
-    void setup_cmat(Core::LinAlg::SymmetricTensor<double, 3, 3, 3, 3>& cmat) const;
+    void setup_cmat(Core::LinAlg::SymmetricTensor<double, 3, 3, 3, 3>& cmat, int eleGID) const;
     /**
      * \brief setup the elastoplasticity tensor in matrix notation for 3d return to cone
      *
