@@ -30,7 +30,7 @@ FOUR_C_NAMESPACE_OPEN
 
 Mat::PAR::PlasticDruckerPrager::PlasticDruckerPrager(const Core::Mat::PAR::Parameter::Data& matdata)
     : Parameter(matdata),
-      youngs_(matdata.parameters.get<double>("YOUNG")),
+      youngs_(matdata.parameters.get<Core::IO::InputField<double>>("YOUNG")),
       poissonratio_(matdata.parameters.get<double>("NUE")),
       density_(matdata.parameters.get<double>("DENS")),
       isohard_(matdata.parameters.get<double>("ISOHARD")),
@@ -160,9 +160,9 @@ void Mat::PlasticDruckerPrager::update()
 }
 
 void Mat::PlasticDruckerPrager::setup_cmat(
-    Core::LinAlg::SymmetricTensor<double, 3, 3, 3, 3>& cmat) const
+    Core::LinAlg::SymmetricTensor<double, 3, 3, 3, 3>& cmat, int eleGID) const
 {
-  double young = params_->youngs_;
+  double young = params_->youngs_.at(eleGID);
 
   double nu = params_->poissonratio_;
 
@@ -258,7 +258,7 @@ void Mat::PlasticDruckerPrager::evaluate_fad(const Core::LinAlg::Matrix<3, 3>* d
 {
   Core::LinAlg::Matrix<Mat::NUM_STRESS_3D, 1> plstrain(Core::LinAlg::Initialization::zero);
 
-  ScalarT young = params_->youngs_;
+  ScalarT young = params_->youngs_.at(eleGID);
   ScalarT nu = params_->poissonratio_;
   ScalarT Hiso = params_->isohard_;
   ScalarT cohesion = params_->cohesion_;
@@ -388,7 +388,7 @@ void Mat::PlasticDruckerPrager::evaluate_fad(const Core::LinAlg::Matrix<3, 3>* d
   }
   else
   {
-    setup_cmat(cmat);
+    setup_cmat(cmat, eleGID);
   }
 }
 
